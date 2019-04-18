@@ -1,5 +1,8 @@
 library(shiny)
 library(shinydashboard)
+library(leaflet)
+
+
 
 ###
 # Component - Side Menu
@@ -15,17 +18,22 @@ mainsidemenu<- sidebarMenu(
 # Component - Tab Pages
 ###
 tab1<- tabItem(tabName = "Tab1",
-        h2("First tab content. This will show when you click on the First tab.")
+               h2("First tab content. This will show when you click on the First tab."),
+               leafletOutput("simplemap", height = 500)
 )
 
 tab2<- tabItem(tabName = "Tab2",
                h2("Other tab content. This will show when you click on the Second tab."),
+               infoBoxOutput("approvalBox"),
+              
                box(
                  title = "Inputs",background = "black", status = "warning",
                  "Box content here", br(), "More box content",
                  sliderInput("slider", "Slider input:", 1, 100, 50),
                  textInput("text", "Text input:")
                )
+               
+               
 )
 
 ###############################################################################
@@ -36,7 +44,7 @@ header <- dashboardHeader(title = "First Dashboard",dropdownMenuOutput("messageM
 sidebar <- dashboardSidebar(mainsidemenu)
 body <- dashboardBody(tabItems(tab1,tab2))
 
-ui <- dashboardPage(header,sidebar,body)
+ui <- dashboardPage(header,sidebar,body,skin = "red")
 
 
 ###
@@ -52,7 +60,24 @@ server <- function(input, output) {
     
     dropdownMenu(type = "tasks", .list = msgs)
   })
+ 
+  output$approvalBox <- renderInfoBox({
+    infoBox(
+      "Approval", "80%", icon = icon("thumbs-up", lib = "glyphicon"),
+      color = "yellow"
+    )
+  })
   
-  }# end of server function
+  output$simplemap <- renderLeaflet({
+    leaflet() %>% addTiles() %>% addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+  })
+  
+ 
+   
+}# end of server function
 
 shinyApp(ui, server)
+
+
+
+
