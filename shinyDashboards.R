@@ -14,12 +14,12 @@ mainsidemenu<- sidebarMenu(
 ###
 # Creating UI
 ###
+header <- dashboardHeader()
+sidebar <- dashboardSidebar(mainsidemenu)
+body <- dashboardBody()
 
-ui <- dashboardPage(
-  dashboardHeader(),
-  dashboardSidebar(mainsidemenu),
-  dashboardBody()
-)
+ui <- dashboardPage(header,sidebar,body)
+
 
 ###
 # Creating SERVER
