@@ -1,6 +1,7 @@
 library(shiny)
 library(shinydashboard)
 library(leaflet)
+library(googlesheets)
 
 
 
@@ -25,7 +26,7 @@ tab1<- tabItem(tabName = "Tab1",
 tab2<- tabItem(tabName = "Tab2",
                h2("Other tab content. This will show when you click on the Second tab."),
                infoBoxOutput("approvalBox"),
-              
+               
                box(
                  title = "Inputs",background = "black", status = "warning",
                  "Box content here", br(), "More box content",
@@ -50,17 +51,19 @@ ui <- dashboardPage(header,sidebar,body,skin = "red")
 ###
 # Creating SERVER
 ###
+tasks<- gs_read(ss=gs_title("absolute rough"),ws="tasklist")
+
 server <- function(input, output) { 
   
   output$messageMenu <- renderMenu({
-    messageData<- data.frame(value=85,color="yellow",text="Server Deployment")
+    messageData<- data.frame(value=tasks$status,color="yellow",text=tasks$task)
     msgs <- apply(messageData, 1, function(row) {
       taskItem(value = row[["value"]], color = row[["color"]], text = row[["text"]])
     })
     
     dropdownMenu(type = "tasks", .list = msgs)
   })
- 
+  
   output$approvalBox <- renderInfoBox({
     infoBox(
       "Approval", "80%", icon = icon("thumbs-up", lib = "glyphicon"),
@@ -72,12 +75,8 @@ server <- function(input, output) {
     leaflet() %>% addTiles() %>% addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
   })
   
- 
-   
+  
+  
 }# end of server function
 
 shinyApp(ui, server)
-
-
-
-
