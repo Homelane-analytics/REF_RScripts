@@ -11,4 +11,6 @@
 #####
 # MAPS
 #####
-leaflet() %>% addTiles() %>% addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+df<- gs_read(gs_title("absolute rough"),ws="locationList")
+    leaflet(df) %>% addTiles() %>% addMarkers(popup = df$Name)%>%  
+      addCircles(radius = 3000,color = df$Name)
