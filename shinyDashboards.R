@@ -19,7 +19,6 @@ mainsidemenu<- sidebarMenu(
 # Component - Tab Pages
 ###
 tab1<- tabItem(tabName = "Tab1",
-               h2("First tab content. This will show when you click on the First tab."),
                leafletOutput("simplemap", height = 500)
 )
 
@@ -72,7 +71,9 @@ server <- function(input, output) {
   })
   
   output$simplemap <- renderLeaflet({
-    leaflet() %>% addTiles() %>% addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+    df<- gs_read(gs_title("absolute rough"),ws="locationList")
+    leaflet(df) %>% addTiles() %>% addMarkers(popup = df$Name)%>%  
+      addCircles(radius = 3000,color = df$Name)
   })
   
   
