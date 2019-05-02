@@ -5,7 +5,7 @@ library(RMySQL)
 # ALTER USER 'root'@'localhost'
 # IDENTIFIED WITH mysql_native_password BY 'tt089'
 
-db<- dbConnect(MySQL(), user='root', password= 'ttoagk089', dbname='ps_hl_1', host='localhost')
+db<- dbConnect(MySQL(), user='root', password= 'xxx', dbname='ps_hl_1', host='localhost')
 
 
 dbListTables(mydb)
