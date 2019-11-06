@@ -1,0 +1,7 @@
+# GET GOOGLE ANALYTICS DATA
+
+ ga_data <- google_analytics(84793717, 
+                              date_range = c("2019-10-01", as.character(date(now()))), 
+                              metrics = c("pageviews","sessions","Users","newUsers"), 
+                              dimensions = c("Month",'campaign','adwordsCriteriaID','sourceMedium'),
+                              anti_sample = TRUE)
